@@ -25,11 +25,16 @@
 			<span class="avatar"><img src="static/images/avatar.png" width="150" height="150" alt="" /></span>
 		</header>
 		<!-- <hr/> -->
-		<h1>Contact us!</h1>
+		<h1>Quote Generator</h1>
 		<form method="post" action="/sent">
-			<div style="padding-top: 6px; padding-bottom: 4px;">{{contactform.name}}</div>
-			<div style="padding-top: 6px; padding-bottom: 4px;">{{contactform.email}}</div>
-			<div style="padding-top: 6px; padding-bottom: 4px;"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.performance}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.performance_date}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.email}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.name}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.quote_id}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.amount}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{quoteform.tax}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;"><textarea name="Address" id="Address" placeholder="Full Address" rows="4"></textarea></div>
 			<!-- <div class="field">
 				<textarea name="message" id="message" placeholder="Message" rows="4"></textarea>
 			</div> -->
@@ -49,7 +54,7 @@
 			<br>
 			<ul class="actions">
 				<!-- <li><a href="#" class="button">Submit</a></li> -->
-				{{ contactform.button}}
+				{{quoteform.button}}
 				<!-- <li><a href="#" class="button">Submit</a></li> -->
 		<!-- <div class="field">
 			<label>But are you a robot?</label>
