@@ -1,1 +1,5 @@
 flask
+weasyprint
+wtforms
+smtplib
+io
