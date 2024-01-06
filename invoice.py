@@ -1,81 +1,67 @@
 from flask import Flask, render_template, request
 from flask.views import MethodView
 from wtforms import Form, StringField, SubmitField
-import smtplib
 from datetime import datetime
 from weasyprint import HTML
-import io
-import os
+from ironpdf import PdfDocument
 
-app = Flask(__name__)
+TODAY = datetime.today().strftime("%d %B")
 
-# QUOTE ===========================================================
+# INVOICE =================================================
 
 
-class ContactFormPage(MethodView):
+class InvoiceFormPage(MethodView):
+    """Allows class data to be used on invoice.html"""
 
     def get(self):
-        contact_form = ContactForm()
-        return render_template("contact.html", contactform=contact_form)
+        invoice_form = InvoiceForm()
+        return render_template("invoice.html", invoiceform=invoice_form)
 
 
-class ContactForm(Form):
-    pass
+class InvoiceForm(Form):
+    """Provides HTML with desired input fields and button"""
 
-    # name = StringField("Name: ", render_kw={"placeholder": "Name"})
-    # email = StringField("Email: ", render_kw={"placeholder": "Email"})
-    # message = StringField("Message: ", render_kw={
-    #                       "placeholder": "Message"}, id="message")
-    button = SubmitField("Submit")
+    performance = StringField("Performance: ", render_kw={
+                              "placeholder": "Performance"})
+    email = StringField("Email: ", render_kw={"placeholder": "Company Email"})
+    company_name = StringField("Company Name: ", render_kw={
+                               "placeholder": "Company Name"})
+    invoice_id = StringField("Invoice ID: ", render_kw={
+        "placeholder": "Invoice ID"})
+    address = StringField("Address: ", render_kw={
+                          "placeholder": "Full Address"})
+    amount = StringField("Amount: ", render_kw={"placeholder": "Amount"})
+    tax = StringField("Tax: ", render_kw={"placeholder": "Tax"})
+
+    button = SubmitField("Create PDF")
 
 
-class SendMail(MethodView):
+class GenerateInvoice(MethodView):
+    """Takes user input data and writes to PDF"""
 
     def post(self):
-        # user_input = ContactForm(request.form)
-        # name = str(user_input.data["name"])
-        # email = str(user_input.data["email"])
-        # message = str(user_input.data["message"])
+        user_input = InvoiceForm(request.form)
 
-        # with smtplib.SMTP('smtp.gmail.com', port=587) as connection:
-        #     connection.starttls()
-        #     connection.login(user=EMAIL, password=PASSWORD)
-        #     connection.sendmail(from_addr=EMAIL, to_addrs=EMAIL,
-        #                         msg=f"subject:INQUIRY from {name} \n\nFrom: {email}\nMessage: {message}")
+        # Gather information from HTML input fields
+        performance = str(user_input.data["performance"])
+        company_name = str(user_input.data["company_name"])
+        email = str(user_input.data["email"])
+        address = str(user_input.data["address"])
+        invoice_id = int(user_input.data["invoice_id"])
+        amount = int(user_input.data["amount"])
+        tax = int(user_input.data["tax"])
 
-        # print(f"{name}\n{email}\n{message}")
-        return render_template("sent.html")
-        # return render_template("sent.html")
+        print(f"{TODAY}\n{performance}\n{company_name}\n{
+              email}\n{address}\n{invoice_id}\n{amount}\n{tax}\n")
 
-# html = HTML('templates/invoice_test.html')
-# html.write_pdf('invoice.pdf')
+        # render info to HTML and create PDF
+        rendered = render_template("invoice_test.html", id=invoice_id, date=TODAY, add=address,
+                                   company=company_name, email=email, perf=performance, fee=amount, tax=tax)
+        html = HTML(string=rendered)
+        html.write_pdf(f'./pdf/invoice.pdf')
 
+        # Turn PDF into JPG to render to send_pdf.html
+        pdf = PdfDocument.FromFile("./pdf/invoice.pdf")
+        pdf.RasterizeToImageFiles("static/images/invoice.png", DPI=96)
 
-app.add_url_rule('/contact', view_func=ContactFormPage.as_view("contact"))
-
-app.add_url_rule('/sent', view_func=SendMail.as_view("sent"))
-
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-@app.route("/spec.html")
-def spec():
-    return render_template("spec.html")
-
-
-@app.route("/tour.html")
-def tour():
-    return render_template("tour.html")
-
-
-@app.route("/images.html")
-def images():
-    return render_template("images.html")
-
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+        return render_template("send_pdf.html")
