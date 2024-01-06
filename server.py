@@ -5,17 +5,26 @@ from invoice import InvoiceFormPage, InvoiceForm, GenerateInvoice
 
 app = Flask(__name__)
 
-# Contact us page imports
+# 'Contact us' page imports =============================
+
 contact_form = ContactForm()
 contact_page = ContactFormPage()
 send_mail = SendMail()
 
-# Invoice generator imports
+app.add_url_rule('/sent', view_func=SendMail.as_view("sent"))
+app.add_url_rule('/contact', view_func=ContactFormPage.as_view("contact"))
+
+# Invoice generator imports =============================
+
 invoice_form = InvoiceForm()
 invoice_page = InvoiceFormPage()
 generate_invoice = GenerateInvoice()
 
-# ====================================================
+app.add_url_rule('/invoice', view_func=InvoiceFormPage.as_view("invoice"))
+app.add_url_rule(
+    '/invoice_test', view_func=GenerateInvoice.as_view("invoice_test"))
+
+# Login page logic ======================================
 
 
 @app.route('/login.html', methods=['GET', 'POST'])
@@ -27,6 +36,8 @@ def login():
         else:
             return redirect(url_for('invoice'))
     return render_template('login.html', error=error)
+
+# Web page routes ======================================
 
 
 @app.route("/")
@@ -48,15 +59,7 @@ def tour():
 def images():
     return render_template("images.html")
 
-
-app.add_url_rule('/contact', view_func=ContactFormPage.as_view("contact"))
-
-app.add_url_rule('/sent', view_func=SendMail.as_view("sent"))
-
-app.add_url_rule('/invoice', view_func=InvoiceFormPage.as_view("invoice"))
-
-app.add_url_rule('/invoice_test',
-                 view_func=GenerateInvoice.as_view("invoice_test"))
+# ================================================
 
 
 if __name__ == '__main__':

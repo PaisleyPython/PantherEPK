@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import render_template, request
 from flask.views import MethodView
 from wtforms import Form, StringField, SubmitField
 from datetime import datetime
@@ -7,7 +7,7 @@ from ironpdf import PdfDocument
 
 TODAY = datetime.today().strftime("%d %B")
 
-# INVOICE =================================================
+# INVOICE FORM =================
 
 
 class InvoiceFormPage(MethodView):
@@ -51,10 +51,6 @@ class GenerateInvoice(MethodView):
         amount = int(user_input.data["amount"])
         tax = int(user_input.data["tax"])
 
-        print(f"{TODAY}\n{performance}\n{company_name}\n{
-              email}\n{address}\n{invoice_id}\n{amount}\n{tax}\n")
-
-        # render info to HTML and create PDF
         rendered = render_template("invoice_test.html", id=invoice_id, date=TODAY, add=address,
                                    company=company_name, email=email, perf=performance, fee=amount, tax=tax)
         html = HTML(string=rendered)
