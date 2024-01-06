@@ -12,7 +12,7 @@ PASSWORD = "drzf kvcn dorb odbw"
 
 
 class ContactFormPage(MethodView):
-    """Allows class data to be used on invoice.html"""
+    """Allows class data to be used on invoice_template.html"""
 
     def get(self):
         contact_form = ContactForm()

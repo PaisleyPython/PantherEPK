@@ -22,7 +22,7 @@ generate_invoice = GenerateInvoice()
 
 app.add_url_rule('/invoice', view_func=InvoiceFormPage.as_view("invoice"))
 app.add_url_rule(
-    '/invoice_test', view_func=GenerateInvoice.as_view("invoice_test"))
+    '/invoice_design', view_func=GenerateInvoice.as_view("invoice_design"))
 
 # Login page logic ======================================
 

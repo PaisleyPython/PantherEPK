@@ -11,11 +11,11 @@ TODAY = datetime.today().strftime("%d %B")
 
 
 class InvoiceFormPage(MethodView):
-    """Allows class data to be used on invoice.html"""
+    """Allows class data to be used on invoice_template.html"""
 
     def get(self):
         invoice_form = InvoiceForm()
-        return render_template("invoice.html", invoiceform=invoice_form)
+        return render_template("invoice_template.html", invoiceform=invoice_form)
 
 
 class InvoiceForm(Form):
@@ -51,7 +51,7 @@ class GenerateInvoice(MethodView):
         amount = int(user_input.data["amount"])
         tax = int(user_input.data["tax"])
 
-        rendered = render_template("invoice_test.html", id=invoice_id, date=TODAY, add=address,
+        rendered = render_template("invoice_design.html", id=invoice_id, date=TODAY, add=address,
                                    company=company_name, email=email, perf=performance, fee=amount, tax=tax)
         html = HTML(string=rendered)
         html.write_pdf(f'./pdf/invoice.pdf')
