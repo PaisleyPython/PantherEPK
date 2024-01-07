@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, url_for
 from flask.views import MethodView
 from wtforms import Form, StringField, SubmitField
 from datetime import datetime
@@ -61,6 +61,8 @@ class GenerateInvoice(MethodView):
 
     def post(self):
 
+        # TODO i shouldnt need to change anything in here to access the client var?
+
         user_input = InvoiceForm(request.form)
 
         # Gather information from HTML input fields
@@ -105,24 +107,23 @@ class SendEmail(GenerateInvoice):
             connection.login(user=EMAIL, password=PASSWORD)
             connection.sendmail(from_addr=EMAIL, to_addrs=EMAIL,
                                 msg=f"subject:TEST TEST \n\nFrom: {EMAIL}\nMessage: TEST TEST")
-
-    # msg = EmailMessage()
-    # msg['Subject'] = 'Perfomance Invoice'
-    # msg['From'] = EMAIL
-    # msg['To'] = self.client
-    # msg.set_content(
-    #     'Meow, \n Please see attached invoice from our recent performance \n Att, \n Disco Panther 🐾')
-
-    # file = f"./pdf/invoice-{self.invoice_id}.pdf"
-    # with open(file, 'rb') as f:
-    #     file_data = f.read()
-    #     file_name = f.name
-    #     msg.add_attachment(file_data, maintype='application',
-    #                        subtype='octet-stream', filename=file_name)
-    # with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-    #     smtp.login(EMAIL, PASSWORD)
-    #     smtp.send_message(msg)
-    #     print(count)
-    #     count = count+1
-
         return render_template("sent_pdf.html")
+
+        # msg = EmailMessage()
+        # msg['Subject'] = 'Perfomance Invoice'
+        # msg['From'] = EMAIL
+        # msg['To'] = "discopantherr@gmail.com"
+        # msg.set_content(
+        #     'Meow, \n Please see attached invoice from our recent performance \n Att, \n Disco Panther 🐾')
+
+        # file = "pdf/invoice.pdf"
+        # with open(file, 'rb') as f:
+        #     file_data = f.read()
+        #     file_name = f.name
+        #     msg.add_attachment(file_data, maintype='application',
+        #                        subtype='octet-stream', filename=file_name)
+        # with smtplib.SMTP_SSL('smtp.gmail.com', port=587) as smtp:
+        #     smtp.login(EMAIL, PASSWORD)
+        #     smtp.send_message(msg)
+
+        # return render_template("sent_pdf.html")
