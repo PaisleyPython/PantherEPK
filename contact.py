@@ -12,11 +12,11 @@ PASSWORD = "drzf kvcn dorb odbw"
 
 
 class ContactFormPage(MethodView):
-    """Allows class data to be used on invoice_template.html"""
+    """Allows class data to be used on invoice_form.html"""
 
     def get(self):
         contact_form = ContactForm()
-        return render_template("contact.html", contactform=contact_form)
+        return render_template("contact_form.html", contactform=contact_form)
 
 
 class ContactForm(Form):
@@ -36,8 +36,8 @@ class SendMail(MethodView):
         user_input = ContactForm(request.form)
 
         # Gather information from HTML input fields
-        name = str(user_input.data["name"])
-        email = str(user_input.data["email"])
+        name = str(user_input.data["name"]).title()
+        email = str(user_input.data["email"]).lower()
         message = str(user_input.data["message"])
 
         # Creates connection with gmail, populates email fields and send email.

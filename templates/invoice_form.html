@@ -25,15 +25,25 @@
 			<span class="avatar"><img src="static/images/avatar.png" width="150" height="150" alt="" /></span>
 		</header>
 		<!-- <hr/> -->
-		<h1>pdf generated</h1>
-
-		<form method="post" action="/sent_pdf">
-			<button name="forwardBtn" type="submit">SEND TO CLIENT</button>
+		<h1>Invoice Generator</h1>
+		<form method="post" action="/invoice_design">
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.invoice_id}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.performance}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.email}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.company_name}}</div>
+            <div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.amount}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.add1}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.add2}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.city}}</div>
+			<div style="padding-top: 6px; padding-bottom: 4px;">{{invoiceform.postcode}}</div>
+			<!-- <div style="padding-top: 6px; padding-bottom: 4px;"><textarea name="address" id="address" placeholder="Full Address" rows="4"></textarea></div> -->
+			<br>
+			<ul class="actions">
+				{{invoiceform.button}}
+			</ul>
 		</form>
-
-	
-		<div class="col-4"><img src="static/images/invoice.png" alt="" /></span></div>
-	<br><br>
+		<hr />
+	</section>
 	<br><br>
 
 <!-- Footer -->
@@ -51,12 +61,6 @@
 			if ('addEventListener' in window) {
 				window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
 				document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
-			}
-			function runPythonScript() {
-			// Get the path to the Python script.
-			var pythonScriptPath = "panther/mail.py";
-			// Run the Python script.
-			subprocess.run(["python", pythonScriptPath]);
 			}
 		</script>
 	</body>

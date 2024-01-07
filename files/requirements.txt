@@ -1,5 +1,10 @@
 flask
+flask.views
 weasyprint
 wtforms
 smtplib
-io
+os
+pandas
+email.message
+ironpdf
+datetime

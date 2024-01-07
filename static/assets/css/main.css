@@ -248,6 +248,9 @@
 	}
 
 /* Form */
+	textarea {
+		white-space: pre-wrap;
+	}
 
 	form {
 		margin: 0 0 1.5em 0;
@@ -271,7 +274,7 @@
 
 	input[type="text"],
 	input[type="password"],
-	input[type="email"],
+	input[type="email"],	
 	input[type="tel"],
 	select,
 	textarea {

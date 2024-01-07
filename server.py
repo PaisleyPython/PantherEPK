@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 import os
 from contact import ContactForm, SendMail, ContactFormPage
-from invoice import InvoiceFormPage, InvoiceForm, GenerateInvoice
+from invoice import InvoiceFormPage, InvoiceForm, GenerateInvoice, SendEmail
 
 app = Flask(__name__)
 
@@ -23,6 +23,17 @@ generate_invoice = GenerateInvoice()
 app.add_url_rule('/invoice', view_func=InvoiceFormPage.as_view("invoice"))
 app.add_url_rule(
     '/invoice_design', view_func=GenerateInvoice.as_view("invoice_design"))
+
+
+# sent pdf imports ======================================
+
+send = SendEmail()
+
+
+@app.route("/send_pdf", methods=['POST'])
+def send_pdf():
+    send.send_email()
+    return render_template('sent_pdf.html')
 
 # Login page logic ======================================
 
