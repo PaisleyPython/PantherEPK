@@ -27,12 +27,13 @@ app.add_url_rule(
 
 # sent pdf imports ======================================
 
-send = SendEmail()
+# send = SendEmail()
 
 
 @app.route("/send_pdf", methods=['POST'])
 def send_pdf():
-    send.send_email()
+    # GenerateInvoice().post()
+    SendEmail().send_email()
     return render_template('sent_pdf.html')
 
 # Login page logic ======================================

@@ -9,8 +9,6 @@ import smtplib
 from email.message import EmailMessage
 
 TODAY = datetime.today().strftime("%d %B")
-# EMAIL = "discopantherr@gmail.com"
-# PASSWORD = "drzf kvcn dorb odbw"
 
 # TODO consider logic for invoice number automation
 # TODO lowercase form input
@@ -55,22 +53,18 @@ class InvoiceForm(Form):
 class GenerateInvoice(MethodView):
     """Takes user input data and writes to PDF"""
 
-    # def __init__(self):
-    #     self.client = "discopantherr@gmail.com"
-    #     self.invoice_id = 0
-
     def post(self):
 
-        # TODO i shouldnt need to change anything in here to access the client var?
+        global client_email
 
         user_input = InvoiceForm(request.form)
 
         # Gather information from HTML input fields
         performance = str(user_input.data["performance"])
         company_name = str(user_input.data["company_name"]).title()
-        client = str(user_input.data["email"]).lower()
-        amount = int(user_input.data["amount"])
-        invoice_id = int(user_input.data["invoice_id"])
+        client_email = str(user_input.data["email"]).lower()
+        amount = str(user_input.data["amount"])
+        invoice_id = str(user_input.data["invoice_id"])
         add1 = str(user_input.data["add1"]).title()
         city = str(user_input.data["city"]).title()
         postcode = str(user_input.data["postcode"]).upper()
@@ -79,7 +73,7 @@ class GenerateInvoice(MethodView):
         # tax = int(user_input.data["tax"])
 
         rendered = render_template("invoice_design.html", date=TODAY, add1=add1, id=invoice_id,
-                                   postcode=postcode, city=city, company=company_name, email=client, perf=performance, fee=amount)
+                                   postcode=postcode, city=city, company=company_name, email=client_email, perf=performance, fee=amount)
         html = HTML(string=rendered)
         html.write_pdf(f'./pdf/invoice.pdf')
 
@@ -88,28 +82,25 @@ class GenerateInvoice(MethodView):
         pdf.RasterizeToImageFiles(
             f"static/images/invoice.png", DPI=96)
 
-        # Creates connection with gmail, populates email fields and send email.
-
         return render_template("send_pdf.html")
+
+# TODO add bcc
 
 
 class SendEmail(GenerateInvoice):
+    """# Creates connection with gmail, populates email fields and send email."""
 
     def send_email(self):
 
-        EMAIL = "discopantherr@gmail.com"
-        PASSWORD = "drzf kvcn dorb odbw"
+        print(client_email)
 
-        with smtplib.SMTP('smtp.gmail.com', port=587) as connection:
-            connection.starttls()
-            connection.login(user=EMAIL, password=PASSWORD)
-            connection.sendmail(from_addr=EMAIL, to_addrs=EMAIL,
-                                msg=f"subject:TEST TEST \n\nFrom: {EMAIL}\nMessage: TEST TEST")
+        DP_EMAIL = "discopantherr@gmail.com"
+        PASSWORD = "drzf kvcn dorb odbw"
 
         msg = EmailMessage()
         msg['Subject'] = 'Perfomance Invoice'
-        msg['From'] = EMAIL
-        msg['To'] = ""
+        msg['From'] = DP_EMAIL
+        msg['To'] = client_email, DP_EMAIL
         msg.set_content(
             'Hey there,\n\nPlease see the attached invoice from our recent performance\n\nAll the best\n\nDisco Panther 🐾')
 
@@ -120,7 +111,16 @@ class SendEmail(GenerateInvoice):
             msg.add_attachment(file_data, maintype='application',
                                subtype='octet-stream', filename=file_name)
         with smtplib.SMTP_SSL('smtp.gmail.com', port=465) as smtp:
-            smtp.login(EMAIL, PASSWORD)
+            smtp.login(DP_EMAIL, PASSWORD)
             smtp.send_message(msg)
 
         return render_template("sent_pdf.html")
+
+
+# ============================================================
+
+# with smtplib.SMTP('smtp.gmail.com', port=587) as connection:
+#     connection.starttls()
+#     connection.login(user=EMAIL, password=PASSWORD)
+#     connection.sendmail(from_addr=EMAIL, to_addrs=EMAIL,
+#                         msg=f"subject:TEST TEST \n\nFrom: {EMAIL}\nMessage: TEST TEST")
