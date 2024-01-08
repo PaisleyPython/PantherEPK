@@ -8,8 +8,6 @@ import config
 
 TODAY = datetime.today().strftime("%d %B")
 
-# TODO lowercase form input
-# TODO hide environment variables
 
 # INVOICE FORM CREATION ===========================================
 

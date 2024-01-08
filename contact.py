@@ -2,13 +2,12 @@ from flask import Flask, render_template, request
 from flask.views import MethodView
 from wtforms import Form, StringField, SubmitField
 import smtplib
+import os
 
-# TODO will have to creae enviro vars to hide this data
-# Connection to Gmail
-EMAIL = "discopantherr@gmail.com"
-PASSWORD = "drzf kvcn dorb odbw"
+EMAIL = os.getenv("PANTHER_EMAIL")
+PASSWORD = os.getenv("EMAIL_API")
 
-# CONTACT FORM ===================
+# CONTACT FORM =============================================
 
 
 class ContactFormPage(MethodView):
@@ -35,17 +34,14 @@ class SendMail(MethodView):
     def post(self):
         user_input = ContactForm(request.form)
 
-        # Gather information from HTML input fields
         name = str(user_input.data["name"]).title()
         email = str(user_input.data["email"]).lower()
         message = str(user_input.data["message"])
 
-        # Creates connection with gmail, populates email fields and send email.
         with smtplib.SMTP('smtp.gmail.com', port=587) as connection:
             connection.starttls()
             connection.login(user=EMAIL, password=PASSWORD)
             connection.sendmail(from_addr=EMAIL, to_addrs=EMAIL,
                                 msg=f"subject:ENQUIRY from {name} \n\nFrom: {email}\nMessage: {message}")
 
-        # print(f"{name}\n{email}\n{message}")
         return render_template("sent.html")

@@ -1,10 +1,11 @@
+datetime
+email.message
 flask
 flask.views
+ironpdf
+os
+smtplib
 weasyprint
 wtforms
-smtplib
-os
-pandas
-email.message
-ironpdf
-datetime
+
+

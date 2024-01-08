@@ -1,8 +1,10 @@
-# import pandas as pd
 from flask import render_template
 import smtplib
 from email.message import EmailMessage
 import config
+import os
+
+# SENDS INVOICE PDF TO CLIENT =====================================================
 
 
 class SendEmail():
@@ -10,8 +12,8 @@ class SendEmail():
 
     def send_email(self):
 
-        DP_EMAIL = "discopantherr@gmail.com"
-        PASSWORD = "drzf kvcn dorb odbw"
+        DP_EMAIL = os.getenv("PANTHER_EMAIL")
+        PASSWORD = os.getenv("EMAIL_API")
 
         msg = EmailMessage()
         msg['Subject'] = 'Perfomance Invoice'
