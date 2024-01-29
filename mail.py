@@ -14,13 +14,14 @@ class SendEmail():
 
         DP_EMAIL = os.getenv("PANTHER_EMAIL")
         PASSWORD = os.getenv("EMAIL_API")
+        JOHN = "heaton.john@gmail.com"
 
         msg = EmailMessage()
-        msg['Subject'] = 'Perfomance Invoice'
+        msg['Subject'] = 'Amended Perfomance Invoice'
         msg['From'] = DP_EMAIL
-        msg['To'] = config.client_email, DP_EMAIL
+        msg['To'] = config.client_email, DP_EMAIL, JOHN
         msg.set_content(
-            'Hey there,\n\nPlease see the attached invoice from our recent performance\n\nAll the best\n\nDisco Panther 🐾')
+            'Hey there,\n\nPlease see the amended invoice from our recent performance\n\nAll the best\n\nDisco Panther 🐾')
 
         file = "pdf/invoice.pdf"
         with open(file, 'rb') as f:

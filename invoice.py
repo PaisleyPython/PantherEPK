@@ -6,7 +6,7 @@ from weasyprint import HTML
 from ironpdf import PdfDocument
 import config
 
-TODAY = datetime.today().strftime("%d %B")
+TODAY = datetime.today().strftime("%d %B, %Y")
 
 
 # INVOICE FORM CREATION ===========================================
