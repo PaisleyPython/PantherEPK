@@ -23,7 +23,7 @@ It also includes an integrated invoice generator that enables the band to seamle
 * CSS
 * Bootstrap
 
-<img>
-<img>
-<img>
-<img>
+<img width="702" alt="scrnshot1" src="https://github.com/PaisleyPython/PantherEPK/assets/148840962/864dde20-62c1-4cc2-980b-787bf065f6a8">
+<img width="734" alt="scrnshot2" src="https://github.com/PaisleyPython/PantherEPK/assets/148840962/7a981532-019a-4ad4-8a5a-662d68eb1891">
+<img width="606" alt="scrnshot3" src="https://github.com/PaisleyPython/PantherEPK/assets/148840962/efec0b41-0936-4405-990e-f3b655f861df">
+<img width="606" alt="scrnshot4" src="https://github.com/PaisleyPython/PantherEPK/assets/148840962/7e1ba0ea-dfdd-4760-a90e-985d2114b842">
